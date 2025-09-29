@@ -184,19 +184,7 @@
 * `IsActive` *(bool)* — активность.
 * `PromoCode` *(string, nvarchar(50), nullable)* — промокод.
 
-#### **Carts**
 
-* `CartId` *(int, PK)* — уникальный идентификатор корзины.
-* `ClientId` *(int, FK → Clients.ClientId)* — клиент, которому принадлежит корзина.
-* `CreatedAt` *(DateTime)* — дата создания корзины.
-* `UpdatedAt` *(DateTime)* — дата последнего изменения.
-
-#### **CartItems**
-
-* `CartItemId` *(int, PK)* — уникальный идентификатор позиции в корзине.
-* `CartId` *(int, FK → Carts.CartId)* — корзина.
-* `DishId` *(int, FK → Dishes.DishId)* — блюдо.
-* `Quantity` *(int)* — количество.
 
 ## Связи между таблицами
 
