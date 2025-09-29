@@ -78,86 +78,119 @@
 | **`deliveries`** | Управление процессом доставки: назначение курьеров, отслеживание времени. |
 | **`discounts`** | Система скидок и акций, их условия и периоды действия. |
 
-Описание структуры базы данных
-Таблица Clients
-ClientId (int, PK) — уникальный идентификатор клиента.
-Name (string, nvarchar(100)) — имя или ФИО клиента.
-Phone (string, nvarchar(20)) — телефон.
-Address (string, nvarchar(200)) — адрес доставки.
-CreatedAt (DateTime) — дата регистрации.
-Таблица Positions
-PositionId (int, PK) — уникальный идентификатор должности.
-Title (string, nvarchar(50)) — название должности.
-Таблица Employees
-EmployeeId (int, PK) — уникальный идентификатор сотрудника.
-PositionId (int, FK → Positions.PositionId) — должность.
-FirstName (string, nvarchar(50)) — имя.
-LastName (string, nvarchar(50)) — фамилия.
-Phone (string, nvarchar(20)) — телефон.
-HireDate (DateTime) — дата приёма на работу.
-Salary (decimal(10,2)) — зарплата.
-Таблица OrderStatuses
-StatusId (int, PK) — уникальный идентификатор статуса.
-Name (string, nvarchar(50)) — название статуса.
-Таблица Payments
-PaymentId (int, PK) — уникальный идентификатор способа оплаты.
-MethodName (string, nvarchar(50)) — название метода оплаты.
-Таблица Orders
-OrderId (int, PK) — уникальный идентификатор заказа.
-ClientId (int, FK → Clients.ClientId) — клиент.
-StatusId (int, FK → OrderStatuses.StatusId) — статус заказа.
-PaymentId (int, FK → Payments.PaymentId) — способ оплаты.
-DiscountId (int, FK → Discounts.DiscountId, nullable) — скидка.
-TotalAmount (decimal(10,2)) — сумма до скидки.
-FinalAmount (decimal(10,2)) — сумма после скидки.
-CreatedAt (DateTime) — дата и время оформления.
-Таблица Deliveries
-DeliveryId (int, PK) — уникальный идентификатор доставки.
-OrderId (int, FK → Orders.OrderId) — заказ.
-EmployeeId (int, FK → Employees.EmployeeId) — курьер.
-Address (string, nvarchar(200)) — адрес доставки.
-DepartedAt (DateTime, nullable) — время выезда курьера.
-DeliveredAt (DateTime, nullable) — время доставки.
-Таблица Categories
-CategoryId (int, PK) — уникальный идентификатор категории.
-Name (string, nvarchar(50)) — название категории.
-Description (string, nvarchar(200), nullable) — описание категории.
-Таблица Dishes
-DishId (int, PK) — уникальный идентификатор блюда.
-CategoryId (int, FK → Categories.CategoryId) — категория.
-Name (string, nvarchar(100)) — название блюда.
-Description (string, nvarchar(300), nullable) — описание.
-WeightGrams (int) — вес порции.
-Price (decimal(10,2)) — цена.
-IsAvailable (bool) — доступность.
-Таблица Ingredients
-IngredientId (int, PK) — уникальный идентификатор ингредиента.
-Name (string, nvarchar(100)) — название ингредиента.
-UnitOfMeasure (string, nvarchar(20)) — единица измерения.
-CurrentPrice (decimal(10,2)) — закупочная цена.
-QuantityInStock (decimal(10,3)) — количество на складе.
-Таблица OrderItems
-OrderItemId (int, PK) — уникальный идентификатор позиции заказа.
-OrderId (int, FK → Orders.OrderId) — заказ.
-DishId (int, FK → Dishes.DishId) — блюдо.
-Quantity (int) — количество.
-PriceAtTimeOfOrder (decimal(10,2)) — цена на момент заказа.
-Таблица DishIngredients
-DishIngredientId (int, PK) — уникальный идентификатор записи.
-DishId (int, FK → Dishes.DishId) — блюдо.
-IngredientId (int, FK → Ingredients.IngredientId) — ингредиент.
-QuantityRequired (decimal(10,3)) — количество ингредиента.
-Таблица Discounts
-DiscountId (int, PK) — уникальный идентификатор скидки.
-Name (string, nvarchar(100)) — название.
-Description (string, nvarchar(200), nullable) — описание условий.
-DiscountType (string, nvarchar(20)) — тип (процент/сумма).
-DiscountValue (decimal(10,2)) — значение скидки.
-MinOrderAmount (decimal(10,2)) — минимальная сумма заказа.
-StartDate (DateTime) — дата начала.
-EndDate (DateTime) — дата окончания.
-IsActive (bool) — активность.
-PromoCode (string, nvarchar(50), nullable) — промокод.
+
+### Таблица **Clients**
+
+* `ClientId` *(int, PK)* — уникальный идентификатор клиента.
+* `Name` *(string, nvarchar(100))* — имя или ФИО клиента.
+* `Phone` *(string, nvarchar(20))* — телефон.
+* `Address` *(string, nvarchar(200))* — адрес доставки.
+* `CreatedAt` *(DateTime)* — дата регистрации.
+
+### Таблица **Positions**
+
+* `PositionId` *(int, PK)* — уникальный идентификатор должности.
+* `Title` *(string, nvarchar(50))* — название должности.
+
+### Таблица **Employees**
+
+* `EmployeeId` *(int, PK)* — уникальный идентификатор сотрудника.
+* `PositionId` *(int, FK → Positions.PositionId)* — должность.
+* `FirstName` *(string, nvarchar(50))* — имя.
+* `LastName` *(string, nvarchar(50))* — фамилия.
+* `Phone` *(string, nvarchar(20))* — телефон.
+* `HireDate` *(DateTime)* — дата приёма на работу.
+* `Salary` *(decimal(10,2))* — зарплата.
+
+### Таблица **OrderStatuses**
+
+* `StatusId` *(int, PK)* — уникальный идентификатор статуса.
+* `Name` *(string, nvarchar(50))* — название статуса.
+
+### Таблица **Payments**
+
+* `PaymentId` *(int, PK)* — уникальный идентификатор способа оплаты.
+* `MethodName` *(string, nvarchar(50))* — название метода оплаты.
+
+### Таблица **Orders**
+
+* `OrderId` *(int, PK)* — уникальный идентификатор заказа.
+* `ClientId` *(int, FK → Clients.ClientId)* — клиент.
+* `StatusId` *(int, FK → OrderStatuses.StatusId)* — статус заказа.
+* `PaymentId` *(int, FK → Payments.PaymentId)* — способ оплаты.
+* `DiscountId` *(int, FK → Discounts.DiscountId, nullable)* — скидка.
+* `TotalAmount` *(decimal(10,2))* — сумма до скидки.
+* `FinalAmount` *(decimal(10,2))* — сумма после скидки.
+* `CreatedAt` *(DateTime)* — дата и время оформления.
+
+### Таблица **Deliveries**
+
+* `DeliveryId` *(int, PK)* — уникальный идентификатор доставки.
+* `OrderId` *(int, FK → Orders.OrderId)* — заказ.
+* `EmployeeId` *(int, FK → Employees.EmployeeId)* — курьер.
+* `Address` *(string, nvarchar(200))* — адрес доставки.
+* `DepartedAt` *(DateTime, nullable)* — время выезда курьера.
+* `DeliveredAt` *(DateTime, nullable)* — время доставки.
+
+### Таблица **Categories**
+
+* `CategoryId` *(int, PK)* — уникальный идентификатор категории.
+* `Name` *(string, nvarchar(50))* — название категории.
+* `Description` *(string, nvarchar(200), nullable)* — описание категории.
+
+### Таблица **Dishes**
+
+* `DishId` *(int, PK)* — уникальный идентификатор блюда.
+* `CategoryId` *(int, FK → Categories.CategoryId)* — категория.
+* `Name` *(string, nvarchar(100))* — название блюда.
+* `Description` *(string, nvarchar(300), nullable)* — описание.
+* `WeightGrams` *(int)* — вес порции.
+* `Price` *(decimal(10,2))* — цена.
+* `IsAvailable` *(bool)* — доступность.
+
+### Таблица **Ingredients**
+
+* `IngredientId` *(int, PK)* — уникальный идентификатор ингредиента.
+* `Name` *(string, nvarchar(100))* — название ингредиента.
+* `UnitOfMeasure` *(string, nvarchar(20))* — единица измерения.
+* `CurrentPrice` *(decimal(10,2))* — закупочная цена.
+* `QuantityInStock` *(decimal(10,3))* — количество на складе.
+
+### Таблица **OrderItems**
+
+* `OrderItemId` *(int, PK)* — уникальный идентификатор позиции заказа.
+* `OrderId` *(int, FK → Orders.OrderId)* — заказ.
+* `DishId` *(int, FK → Dishes.DishId)* — блюдо.
+* `Quantity` *(int)* — количество.
+* `PriceAtTimeOfOrder` *(decimal(10,2))* — цена на момент заказа.
+
+### Таблица **DishIngredients**
+
+* `DishIngredientId` *(int, PK)* — уникальный идентификатор записи.
+* `DishId` *(int, FK → Dishes.DishId)* — блюдо.
+* `IngredientId` *(int, FK → Ingredients.IngredientId)* — ингредиент.
+* `QuantityRequired` *(decimal(10,3))* — количество ингредиента.
+
+### Таблица **Discounts**
+
+* `DiscountId` *(int, PK)* — уникальный идентификатор скидки.
+* `Name` *(string, nvarchar(100))* — название.
+* `Description` *(string, nvarchar(200), nullable)* — описание условий.
+* `DiscountType` *(string, nvarchar(20))* — тип (процент/сумма).
+* `DiscountValue` *(decimal(10,2))* — значение скидки.
+* `MinOrderAmount` *(decimal(10,2))* — минимальная сумма заказа.
+* `StartDate` *(DateTime)* — дата начала.
+* `EndDate` *(DateTime)* — дата окончания.
+* `IsActive` *(bool)* — активность.
+* `PromoCode` *(string, nvarchar(50), nullable)* — промокод.
+
+
+## Связи между таблицами
+
+* 1:М — `Clients` → `Orders`, `Positions` → `Employees`, `Categories` → `Dishes`, `Employees` → `Deliveries`.
+* М:М — `Orders` ↔ `Dishes` (через `OrderItems`), `Dishes` ↔ `Ingredients` (через `DishIngredients`).
+* 1:1 — `Orders` ↔ `Deliveries`.
+
 ## Схема связей между таблицами
 
 ### Связи «Один ко многим» (1:М)
