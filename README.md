@@ -190,7 +190,6 @@
 * `ClientId` *(int, FK → Clients.ClientId)* — клиент, которому принадлежит корзина.
 * `CreatedAt` *(DateTime)* — дата создания корзины.
 * `UpdatedAt` *(DateTime)* — дата последнего изменения.
-* `IsActive` *(bool)* — активна ли корзина (true, пока не оформлен заказ).
 
 #### **CartItems**
 
@@ -198,7 +197,6 @@
 * `CartId` *(int, FK → Carts.CartId)* — корзина.
 * `DishId` *(int, FK → Dishes.DishId)* — блюдо.
 * `Quantity` *(int)* — количество.
-* `PriceAtTimeOfAdding` *(decimal(10,2))* — цена блюда на момент добавления в корзину.
 
 ## Связи между таблицами
 
