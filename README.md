@@ -78,99 +78,86 @@
 | **`deliveries`** | Управление процессом доставки: назначение курьеров, отслеживание времени. |
 | **`discounts`** | Система скидок и акций, их условия и периоды действия. |
 
-### Подробное описание полей таблиц
-
-#### **`clients` (Клиенты)**
-*   `client_id` — Уникальный идентификатор клиента (PK).
-*   `name` — ФИО или имя клиента.
-*   `phone` — Контактный телефон.
-*   `address` — Стандартный адрес доставки.
-*   `created_at` — Дата и время регистрации.
-
-#### **`positions` (Должности)**
-*   `position_id` — Уникальный идентификатор должности (PK).
-*   `title` — Наименование должности (например, «Повар», «Курьер»).
-
-#### **`employees` (Сотрудники)**
-*   `employee_id` — Уникальный идентификатор сотрудника (PK).
-*   `position_id` — Идентификатор должности (FK -> `positions`).
-*   `first_name` — Имя сотрудника.
-*   `last_name` — Фамилия сотрудника.
-*   `phone` — Контактный телефон.
-*   `hire_date` — Дата приема на работу.
-*   `salary` — Размер оклада.
-
-#### **`order_statuses` (Статусы заказов)**
-*   `status_id` — Уникальный идентификатор статуса (PK).
-*   `name` — Название статуса (напр., «Принят», «Готовится», «Доставлен»).
-
-#### **`payments` (Способы оплаты)**
-*   `payment_id` — Уникальный идентификатор способа оплаты (PK).
-*   `method_name` — Название способа (напр., «Картой онлайн», «Наличными»).
-
-#### **`orders` (Заказы)**
-*   `order_id` — Уникальный номер заказа (PK).
-*   `client_id` — Идентификатор клиента (FK -> `clients`).
-*   `status_id` — Текущий статус заказа (FK -> `order_statuses`).
-*   `payment_id` — Способ оплаты (FK -> `payments`).
-*   `total_amount` — Итоговая сумма к оплате.
-*   `created_at` — Дата и время создания заказа.
-*   `discount_id` — Ссылка на примененную скидку (FK -> `discounts`).
-*   `final_amount` — Итоговая сумма после применения скидок.
-
-#### **`deliveries` (Доставки)**
-*   `delivery_id` — Уникальный идентификатор доставки (PK).
-*   `order_id` — Идентификатор заказа (FK -> `orders`).
-*   `employee_id` — Идентификатор курьера (FK -> `employees`).
-*   `address` — Адрес доставки.
-*   `departed_at` — Время выезда курьера.
-*   `delivered_at` — Время фактической доставки.
-
-#### **`categories` (Категории блюд)**
-*   `category_id` — Уникальный идентификатор категории (PK).
-*   `name` — Название категории (напр., «Роллы», «Суши»).
-*   `description` — Описание категории.
-
-#### **`dishes` (Блюда)**
-*   `dish_id` — Уникальный идентификатор блюда (PK).
-*   `category_id` — Идентификатор категории (FK -> `categories`).
-*   `name` — Название блюда.
-*   `description` — Состав и описание.
-*   `weight_grams` — Вес порции в граммах.
-*   `price` — Цена.
-*   `is_available` — Флаг доступности блюда.
-
-#### **`ingredients` (Ингредиенты)**
-*   `ingredient_id` — Уникальный идентификатор ингредиента (PK).
-*   `name` — Название ингредиента.
-*   `unit_of_measure` — Единица измерения (шт, гр, мл).
-*   `current_price` — Текущая закупочная цена.
-*   `quantity_in_stock` — Количество на остатке.
-
-#### **`order_items` (Позиции заказа)**
-*   `order_item_id` — Уникальный идентификатор позиции (PK).
-*   `order_id` — Идентификатор заказа (FK -> `orders`).
-*   `dish_id` — Идентификатор блюда (FK -> `dishes`).
-*   `quantity` — Количество порций.
-*   `price_at_time_of_order` — Цена блюда на момент оформления заказа.
-
-#### **`dish_ingredients` (Состав блюд)**
-*   `dish_ingredient_id` — Уникальный идентификатор связи (PK).
-*   `dish_id` — Идентификатор блюда (FK -> `dishes`).
-*   `ingredient_id` — Идентификатор ингредиента (FK -> `ingredients`).
-*   `quantity_required` — Требуемое количество ингредиента для блюда.
-
-#### **`discounts` (Скидки)**
-*   `discount_id` — Уникальный идентификатор скидки (PK).
-*   `name` — Название акции.
-*   `description` — Описание условий.
-*   `discount_type` — Тип скидки (процент/фиксированная сумма).
-*   `discount_value` — Значение скидки.
-*   `min_order_amount` — Минимальная сумма заказа для применения.
-*   `start_date`, `end_date` — Период действия.
-*   `is_active` — Флаг активности акции.
-*   `promo_code` — Промокод (опционально).
-
+Описание структуры базы данных
+Таблица Clients
+ClientId (int, PK) — уникальный идентификатор клиента.
+Name (string, nvarchar(100)) — имя или ФИО клиента.
+Phone (string, nvarchar(20)) — телефон.
+Address (string, nvarchar(200)) — адрес доставки.
+CreatedAt (DateTime) — дата регистрации.
+Таблица Positions
+PositionId (int, PK) — уникальный идентификатор должности.
+Title (string, nvarchar(50)) — название должности.
+Таблица Employees
+EmployeeId (int, PK) — уникальный идентификатор сотрудника.
+PositionId (int, FK → Positions.PositionId) — должность.
+FirstName (string, nvarchar(50)) — имя.
+LastName (string, nvarchar(50)) — фамилия.
+Phone (string, nvarchar(20)) — телефон.
+HireDate (DateTime) — дата приёма на работу.
+Salary (decimal(10,2)) — зарплата.
+Таблица OrderStatuses
+StatusId (int, PK) — уникальный идентификатор статуса.
+Name (string, nvarchar(50)) — название статуса.
+Таблица Payments
+PaymentId (int, PK) — уникальный идентификатор способа оплаты.
+MethodName (string, nvarchar(50)) — название метода оплаты.
+Таблица Orders
+OrderId (int, PK) — уникальный идентификатор заказа.
+ClientId (int, FK → Clients.ClientId) — клиент.
+StatusId (int, FK → OrderStatuses.StatusId) — статус заказа.
+PaymentId (int, FK → Payments.PaymentId) — способ оплаты.
+DiscountId (int, FK → Discounts.DiscountId, nullable) — скидка.
+TotalAmount (decimal(10,2)) — сумма до скидки.
+FinalAmount (decimal(10,2)) — сумма после скидки.
+CreatedAt (DateTime) — дата и время оформления.
+Таблица Deliveries
+DeliveryId (int, PK) — уникальный идентификатор доставки.
+OrderId (int, FK → Orders.OrderId) — заказ.
+EmployeeId (int, FK → Employees.EmployeeId) — курьер.
+Address (string, nvarchar(200)) — адрес доставки.
+DepartedAt (DateTime, nullable) — время выезда курьера.
+DeliveredAt (DateTime, nullable) — время доставки.
+Таблица Categories
+CategoryId (int, PK) — уникальный идентификатор категории.
+Name (string, nvarchar(50)) — название категории.
+Description (string, nvarchar(200), nullable) — описание категории.
+Таблица Dishes
+DishId (int, PK) — уникальный идентификатор блюда.
+CategoryId (int, FK → Categories.CategoryId) — категория.
+Name (string, nvarchar(100)) — название блюда.
+Description (string, nvarchar(300), nullable) — описание.
+WeightGrams (int) — вес порции.
+Price (decimal(10,2)) — цена.
+IsAvailable (bool) — доступность.
+Таблица Ingredients
+IngredientId (int, PK) — уникальный идентификатор ингредиента.
+Name (string, nvarchar(100)) — название ингредиента.
+UnitOfMeasure (string, nvarchar(20)) — единица измерения.
+CurrentPrice (decimal(10,2)) — закупочная цена.
+QuantityInStock (decimal(10,3)) — количество на складе.
+Таблица OrderItems
+OrderItemId (int, PK) — уникальный идентификатор позиции заказа.
+OrderId (int, FK → Orders.OrderId) — заказ.
+DishId (int, FK → Dishes.DishId) — блюдо.
+Quantity (int) — количество.
+PriceAtTimeOfOrder (decimal(10,2)) — цена на момент заказа.
+Таблица DishIngredients
+DishIngredientId (int, PK) — уникальный идентификатор записи.
+DishId (int, FK → Dishes.DishId) — блюдо.
+IngredientId (int, FK → Ingredients.IngredientId) — ингредиент.
+QuantityRequired (decimal(10,3)) — количество ингредиента.
+Таблица Discounts
+DiscountId (int, PK) — уникальный идентификатор скидки.
+Name (string, nvarchar(100)) — название.
+Description (string, nvarchar(200), nullable) — описание условий.
+DiscountType (string, nvarchar(20)) — тип (процент/сумма).
+DiscountValue (decimal(10,2)) — значение скидки.
+MinOrderAmount (decimal(10,2)) — минимальная сумма заказа.
+StartDate (DateTime) — дата начала.
+EndDate (DateTime) — дата окончания.
+IsActive (bool) — активность.
+PromoCode (string, nvarchar(50), nullable) — промокод.
 ## Схема связей между таблицами
 
 ### Связи «Один ко многим» (1:М)
